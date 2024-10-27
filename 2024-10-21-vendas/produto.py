@@ -1,3 +1,6 @@
+import json
+import os
+
 serial_produto = 0 # variável global que vai controlar o ID dos produtos
 
 dados = {"produtos": [],
@@ -36,3 +39,19 @@ def pesquisar_produto(id:int)->dict:
         if produto['id'] == id:
             return produto
     return None
+
+
+# Caminho do arquivo JSON no mesmo diretório que o arquivo produto.py
+CAMINHO_JSON = os.path.join(os.path.dirname(__file__), "produtos.json")
+
+def salvar_dados():
+    with open(CAMINHO_JSON, "w") as arquivo:
+        json.dump(dados["produtos"], arquivo, indent=4)
+
+def carregar_dados():
+    global dados
+    try:
+        with open(CAMINHO_JSON, "r") as arquivo:
+            dados["produtos"] = json.load(arquivo)
+    except FileNotFoundError:
+        dados["produtos"] = []
