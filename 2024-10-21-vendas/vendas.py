@@ -2,7 +2,7 @@ from pprint import pprint
 from produto import *
 from pedido import *
 
-carregar_dados()
+
 print(
     "Bem vindo ao nosso sistema de vendas! Aqui você poderá cadastrar produtos e fazer pedidos."
 )
@@ -29,7 +29,7 @@ while True:
         descricao, valor = ler_produto()
 
         cadastrar_produto(descricao, valor)
-
+        salvar_produtos(dados)
         print("Produto cadastrado!")
         print("--------")
 

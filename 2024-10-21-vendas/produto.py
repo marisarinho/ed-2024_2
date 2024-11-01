@@ -1,14 +1,44 @@
 import json
-import os
 
 serial_produto = 0 # variável global que vai controlar o ID dos produtos
 
-dados = {"produtos": [],
-         "pedidos": []}
+def abrir_json() ->dict:
+    try:
+        with open('produtos.json', 'r') as arquivo_json:
+            produtos_json = json.load(arquivo_json)
+            #se o dic estiver vazio
+            if produtos_json == {}:
+                return {'produtos':[], 'pedidos':[]}
+            
+            #nessa de baixo, retorna o dicionario normalmente
+            return produtos_json
+        #caso nao exista esse arquivo, ou caso o json esteja totalmente vazio
+    except (FileNotFoundError, json.decoder.JSONDecodeError):
+        return {'produtos':[], 'pedidos':[]}
+    
 
-def gerar_id_produto()->int:
-    global serial_produto
-    serial_produto += 1
+     # A gente não tá criando o arquivo, tá só atribuindo esse valor default pra dados.
+    # Se a gente usasse abrir_json mais de uma vez no código, ia dar problema, 
+    # porque toda vez que o arquivo não existisse, ele ia retornar esse default
+    # {'produtos': [], 'pedidos': []} sem realmente criar o arquivo. Isso significa
+    # que qualquer dado novo não seria salvo se o arquivo não existisse ainda.
+    # Pra resolver isso, podia garantir que o arquivo fosse criado logo na inicialização.
+    
+
+def salvar_produtos(produtos ):
+    with open('produtos.json', 'w') as arquivo_json:
+        json.dump(produtos, arquivo_json, indent=4)
+
+dados = abrir_json()
+
+
+def gerar_id_produto() -> int:
+    global serial_produto, dados
+    if dados['produtos']:
+        serial_produto = dados['produtos'][-1]['id']
+        serial_produto += 1
+    else:
+        serial_produto = 1
     return serial_produto
 
 def ler_produto()->tuple:
@@ -39,19 +69,3 @@ def pesquisar_produto(id:int)->dict:
         if produto['id'] == id:
             return produto
     return None
-
-
-# Caminho do arquivo JSON no mesmo diretório que o arquivo produto.py
-CAMINHO_JSON = os.path.join(os.path.dirname(__file__), "produtos.json")
-
-def salvar_dados():
-    with open(CAMINHO_JSON, "w") as arquivo:
-        json.dump(dados["produtos"], arquivo, indent=4)
-
-def carregar_dados():
-    global dados
-    try:
-        with open(CAMINHO_JSON, "r") as arquivo:
-            dados["produtos"] = json.load(arquivo)
-    except FileNotFoundError:
-        dados["produtos"] = []
