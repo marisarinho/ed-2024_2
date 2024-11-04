@@ -1,23 +1,10 @@
-#serial_produto = 0  # variável global que vai controlar o ID dos produtos
 
-class Produto:
-    def __init__(self, desc, valor, idProduto):
-        self.desc = desc
-        self.valor = valor
-        self.idProduto = idProduto
-
-    #sem o @staticmethod, o ler_produto nao funcionava no main
-    #ele indica que ess metodo pertence a classe,nao a algum objeto dela
-
-    @staticmethod
-    def ler_produto() ->tuple:
-        desc = input('Descrição do produto: ')
-        valor = float(input('Valor unitário: '))
-        return desc, valor
+from class_produtos import*
+from save import*
 
 class GerenciarProduto:
-    def __init__(self, dados): #nosso dic dados e, por consequencia, list produtos.
-        self.dados = dados
+    def __init__(self): #nosso dic dados e, por consequencia, list produtos.
+        self.dados = {'produtos':[]}
         self.serial_produto = 1
 
     #consertar!!!!
@@ -43,6 +30,8 @@ class GerenciarProduto:
             'descricao': descricao,
             'valor': valor
         })
+        
+        salvar_produtos(self.dados)
 
     def pesquisar_produto(self, id: int) -> dict:
         for produto in self.dados['produtos']:

@@ -1,5 +1,6 @@
 from save import abrir_json, salvar_produtos
-from class_produto import GerenciarProduto
+from class_produtos import *
+from class_gerenciador import *
 
 # estrutura de dados para armazenar todos pedidos
 colecao_pedidos = {} #chave=ID;valor=list(carrinho)
@@ -9,7 +10,7 @@ serial_num_pedido = 0
 
 # carregando dados
 dados = abrir_json()
-gerenciador = GerenciarProduto(dados)
+gerenciador = GerenciarProduto()
 salvar_produtos(dados)
 
 def gerar_id_pedido() -> int:

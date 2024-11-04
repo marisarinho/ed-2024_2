@@ -1,11 +1,12 @@
 from pprint import pprint
-from class_produto import Produto, GerenciarProduto
+from class_produtos import*
+from class_gerenciador import*
 from pedido import *
 from save import abrir_json, salvar_produtos
 
 
 dados = abrir_json()
-gerenciador = GerenciarProduto(dados)
+gerenciador = GerenciarProduto()
 print(
     "Bem vindo ao nosso sistema de vendas! Aqui você poderá cadastrar produtos e fazer pedidos."
 )
@@ -30,7 +31,7 @@ Opcao: """)
     print("--------")
     if opcao == 1:
 
-        descricao, valor = Produto.ler_produto()
+        descricao, valor = ler_produto()
 
         gerenciador.cadastrar_produto(descricao, valor)
         salvar_produtos(dados)
