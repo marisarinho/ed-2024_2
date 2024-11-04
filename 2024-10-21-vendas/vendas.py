@@ -1,8 +1,11 @@
 from pprint import pprint
-from produto import *
+from class_produto import Produto, GerenciarProduto
 from pedido import *
+from save import abrir_json, salvar_produtos
 
 
+dados = abrir_json()
+gerenciador = GerenciarProduto(dados)
 print(
     "Bem vindo ao nosso sistema de vendas! Aqui você poderá cadastrar produtos e fazer pedidos."
 )
@@ -18,64 +21,67 @@ while True:
 1 - Cadastrar produto.
 2 - Listar produtos.  
 3 - Fazer pedido.
-4 - Pesquisar produtos.                     
-5 - Sair.
-"""
-        )
+4 - Pesquisar produtos. 
+5 - Exibir pedido                    
+6 - Sair.
+------------------------------
+Opcao: """)
     )
     print("--------")
     if opcao == 1:
 
-        descricao, valor = ler_produto()
+        descricao, valor = Produto.ler_produto()
 
-        cadastrar_produto(descricao, valor)
+        gerenciador.cadastrar_produto(descricao, valor)
         salvar_produtos(dados)
         print("Produto cadastrado!")
         print("--------")
 
 
     elif opcao == 2:
-        listar_produtos()
+        gerenciador.listar_produtos()
 
 
-    elif opcao == 3:
+    elif opcao == 3: # fazer o pedido
 
-        carrinho=[]
-        total_compras=0
+        carrinho=[] # um list vazio, para adicionar os produtos
+        # total_compras=0
 
         while True:
-            listar_produtos()
-            pedido = input(
-                "Digite o Id para escolher um pedido ou digite 0(numero zero)para finalizar compra."
-            )
+            gerenciador.listar_produtos()
+            idProduto = int(input(
+                "Digite o Id do produto para adicionar ao carrinho ou digite 0(numero zero)para finalizar compra."
+            ))
             print("--------")
 
-            if pedido == "0":
+            if idProduto == 0:
                 print("Os produtos que voce comprou:")
-                for prod in carrinho:
-                    print(f"{prod['descricao']},R${prod['valor']:.2f}")
-                print(f"Valor total das suas comprinhas:{total_compras:.2f}")
-                print("--------")
+                exibir_pedido(carrinho)
+
+                pergunta = input("Confirmar a compra? (s/n) ")
+                if pergunta == "s":
+                    id_pedido = fechar_pedido(colecao_pedidos, carrinho)
+                    print('Pedido numero ', id_pedido)
+                    print("Compra finalizada!")
                 break
+               
 
             else:
-                for produto in dados["produtos"]:
-                    if produto["id"] == int(pedido):
-                        quant = int(input("Digite quantos produtos desse ID você deseja: "))
-                        print("--------")
-                        # chamando a função
+                produto = gerenciador.pesquisar_produto(idProduto)
+                if produto is None:
+                    print("Produto não encontrado.")
+                    break
+                
+                # se passar do if, o produto foi recuperado
+                quant = int(input("Digite quantos produtos desse ID você deseja: "))
+                print("--------")
+
+                add_produto_carrinho(carrinho, idProduto, quant)
+                print(f'Produto id={idProduto} adicionado')
                         
-                        total_compras = fazer_pedido(quant, produto, carrinho, total_compras)
-
-                        print(
-                            f"{quant}x {produto['descricao']} adicionado ao carrinho."
-                        )
-                        print("--------")
-
-
     elif opcao == 4:
         id = int(input("Digite o id do produto"))
-        retorno = pesquisar_produto(id)
+        retorno = gerenciador.pesquisar_produto(id)
         if retorno:
             print(
                 f"Produto encontrado: {retorno['descricao']}, valor: {retorno['valor']:.2f}"
@@ -84,8 +90,13 @@ while True:
         else:
             print("Produto não encontrado.")
 
-
-    elif opcao == 5:
+    elif opcao == 5: ## exibir pedido
+        id_pedido = int(input("Digite o id do pedido: "))
+        if id_pedido in colecao_pedidos:
+            exibir_pedido(colecao_pedidos[id_pedido])
+        else:
+            print(f"Pedido de numero {id_pedido} não encontrado.")
+    elif opcao == 6:
         print("Fim do programa.")
         print("--------")
         break
