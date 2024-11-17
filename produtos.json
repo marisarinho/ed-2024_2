@@ -1,0 +1,30 @@
+{
+    "produtos": [
+        {
+            "id": 0,
+            "descricao": "touca rosa",
+            "valor": 4.0
+        },
+        {
+            "id": 1,
+            "descricao": "sapato",
+            "valor": 50.0
+        },
+        {
+            "id": 0,
+            "descricao": "blusa",
+            "valor": 50.0
+        },
+        {
+            "id": 1,
+            "descricao": "cap",
+            "valor": 30.0
+        },
+        {
+            "id": 1,
+            "descricao": "blusa",
+            "valor": 34.0
+        }
+    ],
+    "pedidos": []
+}
