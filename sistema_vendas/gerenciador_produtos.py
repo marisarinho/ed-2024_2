@@ -4,10 +4,8 @@ class GerenciadorProdutos:
     def __init__(self):
         self.repositorio_produtos = {}
 
-    
     def adicionar_produto(self, produto:Produto):
         self.repositorio_produtos[produto.id] = produto
-
     
     def pesquisar(self, id:int)->Produto:
         return self.repositorio_produtos.get(id)

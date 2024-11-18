@@ -1,11 +1,14 @@
 from pprint import pprint
-from class_produto import Produto, GerenciarProduto
+from product import Produto
+from gerenciador_produtos import *
 from pedido import *
+from gerenciador_pedido import *
 from save import abrir_json, salvar_produtos
 
 
 dados = abrir_json()
 gerenciador = GerenciarProduto(dados)
+gerenciador_pedidos = GerenciadorPedido()
 print(
     "Bem vindo ao nosso sistema de vendas! Aqui você poderá cadastrar produtos e fazer pedidos."
 )
@@ -56,11 +59,11 @@ Opcao: """)
 
             if idProduto == 0:
                 print("Os produtos que voce comprou:")
-                exibir_pedido(carrinho)
+                Pedido.exibir_pedido(carrinho)
 
                 pergunta = input("Confirmar a compra? (s/n) ")
                 if pergunta == "s":
-                    id_pedido = fechar_pedido(colecao_pedidos, carrinho)
+                    id_pedido = Pedido.fechar_pedido(Pedido.colecao_pedidos, carrinho)
                     print('Pedido numero ', id_pedido)
                     print("Compra finalizada!")
                 break
@@ -91,11 +94,8 @@ Opcao: """)
             print("Produto não encontrado.")
 
     elif opcao == 5: ## exibir pedido
-        id_pedido = int(input("Digite o id do pedido: "))
-        if id_pedido in colecao_pedidos:
-            exibir_pedido(colecao_pedidos[id_pedido])
-        else:
-            print(f"Pedido de numero {id_pedido} não encontrado.")
+        gerenciar_pedido.listar_pedidos()
+
     elif opcao == 6:
         print("Fim do programa.")
         print("--------")
