@@ -4,8 +4,10 @@ class GerenciadorProdutos:
     def __init__(self):
         self.repositorio_produtos = {}
 
+    
     def adicionar_produto(self, produto:Produto):
         self.repositorio_produtos[produto.id] = produto
+
     
     def pesquisar(self, id:int)->Produto:
         return self.repositorio_produtos.get(id)
@@ -17,7 +19,7 @@ class GerenciadorProdutos:
         s = ''
         # {self.repositorio_produtos}"""
         for produto in self.repositorio_produtos.values():
-            s += produto.__str__() + ', '
+            s += produto.__str__() + '\n'
         return s
     
     def __len__(self)->int:

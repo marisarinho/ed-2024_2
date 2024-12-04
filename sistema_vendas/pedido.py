@@ -1,55 +1,39 @@
-from save import abrir_json, salvar_produtos
-from gerenciador_produtos import GerenciarProduto
-
-# estrutura de dados para armazenar todos pedidos
-colecao_pedidos = {} #chave=ID;valor=list(carrinho)
-# variável controladora do serial do pedido
-serial_num_pedido = 0
-
-# carregando dados
-dados = abrir_json()
-gerenciador = GerenciarProduto(dados)
-salvar_produtos(dados)
+from product import Produto
+from item_pedido import ItemPedido
+from pilha_encadeada import Pilha
 
 class Pedido:
-    def __init__(self,repositorio_produtos,quant):
-        self.repositorio_produtos = repositorio_produtos
-        self.quant = quant
-        self.colecao_pedidos = {}
-        self.id_pedido = self.gerar_id_pedido()
+    def __init__(self, id:int):
+        self.id = id # id do pedido
+        self.itens = [] # dicionario com os itens de pedido
+        # Essa lista sao os itens que o pedido vai ter ok?segue explicando 
+    
+    def adicionar_item(self, produto:Produto, quantidade:int):
+        self.itens.append(ItemPedido(produto, quantidade))
+        
 
-    def gerar_id_pedido(self) -> int:
-        global serial_num_pedido
-        serial_num_pedido += 1
-        return serial_num_pedido
+    def total_pedido(self):
+        total = 0
+        for item in self.itens:
+            total += item.total_item()
+        return total
+    
+    def mostrar_carrinho(self): 
+        print('======================================================')
+        print("                 Itens do pedido:")
+        print('======================================================')
+        print('idProduto  | Descrição      | Preço Unit. | Quantidade ')
+        print('-----------  ---------------  ------------  ----------')
+        pilha = Pilha()
+        for item in self.itens:
+            pilha.empilha(item)
 
-    def fechar_pedido(self, carrinho:list)->int:
-        self.colecao_pedidos[self.id_pedido] = carrinho  
-        return self.id_pedido
+        while not pilha.vazia():
+            item = pilha.desempilha()
+            print(f'    {item.produto.id:3d}      {item.produto.descricao:15s}     {item.produto.valor:9.2f}      {item.quantidade:3d}')  
+        print('======================================================')
+        print(f"Valor total das suas comprinhas: R$ {self.total_pedido():.2f}")
+        print('======================================================')
     
     def __str__(self):
-        return f"Pedido ID: {self.id_pedido}, Quantidade de Itens: {self.quant}"
-
-
-    def exibir_pedido(self):
-        print('======================================================')
-        print(f"Pedido ID: {self.id_pedido}")
-        print('======================================================')
-        print('idProduto  | Descrição      | Preço Unit. | Quantidade')
-        print('-----------  ---------------  ------------  ----------')
-        total = 0
-        for item in self.colecao_pedidos[self.id_pedido]:
-            produto = self.repositorio_produtos.pesquisar(item[0])  # Buscar produto pelo ID
-            if produto:
-                print(f"   {produto.id:03d}       {produto.descricao:15s}    {produto.valor:10.2f}      {item[1]:3d}")
-                total += produto.valor * item[1]
-
-        print('======================================================')
-        print(f"Valor total das suas compras: {total:.2f}")
-        print('======================================================')
-
-
-
-
-def add_produto_carrinho(carrinho:list, idProduto:int,quant:int):
-    carrinho.append([idProduto,quant])
+        return f"Pedido: {self.id} | Total: {self.total_pedido():.2f}"
