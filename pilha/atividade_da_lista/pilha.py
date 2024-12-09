@@ -58,7 +58,9 @@ class Pilha:
         while not pilha2.esta_vazia():
             self.empilha(pilha2.desempilha())
 
-    def _transfere_elementos(pilha, pilha_aux1, pilha_aux2, pilha_final):
+    def _transfere_elementos(pilha, pilha_final):
+        pilha_aux1 = Pilha()
+        pilha_aux2 = Pilha()
         while not pilha.esta_vazia():
             pilha_aux1.empilha(pilha.desempilha())
             pilha_aux2.empilha(pilha_aux1.topo())
@@ -69,11 +71,9 @@ class Pilha:
     @classmethod
     def concatena_pilha(cls, pilha1:"Pilha", pilha2:"Pilha")->"Pilha":
         pilha_final = Pilha()
-        pilha_aux1 = Pilha()
-        pilha_aux2 = Pilha()
         # se fosse um self, seria normal(self._nome da funcao)
-        cls._transfere_elementos(pilha1, pilha_aux1, pilha_aux2, pilha_final)
-        cls._transfere_elementos(pilha2, pilha_aux1, pilha_aux2, pilha_final)
+        cls._transfere_elementos(pilha1, pilha_final)
+        cls._transfere_elementos(pilha2, pilha_final)
         return pilha_final
 
     def __str__(self):
