@@ -1,0 +1,4 @@
+fila copia_invertida(nao esta invertendo)
+fila inverter(aparece None no terminal)
+inserçao e remoçao de lista enc
+dar uma olhada em lista seq
