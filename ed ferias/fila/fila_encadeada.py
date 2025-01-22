@@ -1,3 +1,4 @@
+
 class No:
     def __init__(self,carga):
         self.carga = carga
@@ -33,7 +34,7 @@ class Fila:
     def elemento(self,posicao):
         """retorna a carga armazenada na posição
            especificada como argumento"""
-        assert not posicao<0 or posicao>(len(self)), 'posicao nao existente'
+        assert not posicao<0 and posicao>(len(self)), 'posicao nao existente'
         cursor = self.__head.inicio
         for i in range(posicao-1):
             cursor = cursor.prox
@@ -75,9 +76,10 @@ class Fila:
         self.__head.tamanho -= 1
         return carga
     
+
     def copia(self):
         """faz uma copia e a retorna"""
-        copia= Fila()
+        copia= Fila() 
         cursor = self.__head.inicio
         while cursor is not None:
             copia.enfileira(cursor.carga)
@@ -86,57 +88,32 @@ class Fila:
 
     def copia_invertida(self):
         """retorna uma copia invertida"""
+        pilha = []
+        copia = Fila()
+        cursor = self.__head.inicio
+        while cursor is not None:
+            pilha.append(cursor.carga)
+            cursor = cursor.proximo
+        while len(pilha)>0:
+            copia.enfileira(pilha.pop())
+        return copia
+        
+    
         # copia = Fila()
         # for i in range(len(self)):
         #     copia.enfileira(self.desenfileira())
         # return copia
 
-#abaixo codigo do chatgpt
-        # copia = Fila()
-        # aux = Fila()
-
-        # # Copiar os elementos da fila original para a fila auxiliar sem modificar a original
-        # cursor = self.__head.inicio
-        # while cursor is not None:
-        #     aux.enfileira(cursor.carga)
-        #     cursor = cursor.proximo
-        
-        # # Agora, desenfileiramos da fila auxiliar e inserimos na cópia, o que inverte a ordem
-        # while not aux.vazia():
-        #     carga = aux.desenfileira()  # Desenfileira o primeiro item da fila auxiliar
-        #     copia.enfileira(carga)  # Enfileira na cópia, invertendo a ordem dos elementos
-
-        # return copia
-
-
-
-
     def inverter(self):
-        """inverte a fila original"""
-        # aux = self.copia_invertida()
-        # aux2 = Fila()
-        # while not aux.vazia():
-        #     aux2.enfileira(aux.desenfileira())
-        # while not aux2.vazia():
-        #     self.enfileira(aux2.desenfileira())
-
-
-        # copia = self.copia()
-        # self.esvaziar()
-        # cursor = self.__head.inicio
-        # while cursor is not None:
-        #     self.enfileira(cursor.carga)
-        #     cursor = cursor.proximo
-
-        aux= Fila()
+        pilha = []
         while not self.vazia():
-            aux.enfileira(self.desenfileira())
-        while not aux.vazia():
-            self.enfileira(aux.desenfileira())
-
+            pilha.append(self.desenfileira())
+        while pilha: 
+            self.enfileira(pilha.pop())
             
+
     def __str__(self):
-        s = 'frente->['
+        s = "" 
         cursor = self.__head.inicio
         while(cursor):
             s += f'{cursor.carga}, '
@@ -149,7 +126,16 @@ fila = Fila()
 fila.enfileira(1)
 fila.enfileira(2)
 fila.enfileira(3)
-invertida = fila.inverter()
-print(fila)
-print(invertida)
-    
+print("Fila original:", fila)
+fila.copia_invertida()
+print("Fila invertida:", fila)
+
+fila = Fila()
+fila.enfileira(1)
+fila.enfileira(2)
+fila.enfileira(3)
+
+fila_invertida = fila.copia_invertida()
+
+print("Fila original:", fila)  # Deve mostrar na ordem: 1, 2, 3
+print("Fila invertida:", fila_invertida)  # Deve mostrar na ordem: 3, 2, 1
