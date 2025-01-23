@@ -14,12 +14,17 @@ print(novaFrase)
 # aliF e ahliP adaedacne
 # """
 
+
 def inverter(self):
     cursor = self.topo
-    self.esvaziar()
+    elementos = []
     while cursor is not None:
-        self.empilha(cursor.carga)
+        elementos.append(cursor.carga)
         cursor = cursor.proximo
+    self.esvaziar()  
+    for carga in elementos:
+        self.empilha(carga)
+
 
 def reverse(frase):
     pilha = Pilha()

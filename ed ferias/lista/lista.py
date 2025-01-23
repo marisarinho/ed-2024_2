@@ -53,7 +53,7 @@ class Lista:
             
     def inserir(self,posicao,carga):
         # CONDICAO 1: insercao se a lista estiver vazia
-        assert posicao>0 and posicao<=len(self)+1,'posicao nao encontrada'
+        #assert posicao>0 and posicao<=len(self)+1,'posicao nao encontrada'
         if self.vazia():
             if posicao != 1:
                 raise ListaError('lista vazia, tem que inserir na 1 posicao obrigatorio')
@@ -88,23 +88,44 @@ class Lista:
         self.__head.tamanho += 1
 
     def remover(self,posicao):
+        
         assert not self.vazia(),'lista vazia para remoçao'
+        
         if posicao<0 or posicao>len(self):
             raise ListaError ('digite uma posicao valida')
+        
         cursor = self.__head.inicio
+        
         for i in range(posicao):
             anterior = cursor
             cursor = cursor.proximo
+            
         if( posicao == 0):
             self.__head.inicio = cursor.proximo
+            
         else:
             anterior.proximo = cursor.proximo
+            
         if posicao == len(self)-1:
             self.__head.fim = anterior
         self.__head.tamanho -= 1   
 
-    def merge(self):
-        """"""
+    def merge(self,lista):
+        """combina duas listas, retorna uma nova lista"""
+        combinaçao = Lista()
+        cursor = self.__head.inicio
+        i = 1
+        while cursor is not None:
+            combinaçao.inserir(i,cursor.carga)
+            i+=1
+            cursor = cursor.proximo 
+        cursor = lista.__head.inicio
+        j = 1
+        while cursor is not None:
+            combinaçao.inserir(j,cursor.carga)
+            j+=1
+            cursor = cursor.proximo
+        return combinaçao
 
 
     def modificar(self,posicao,carga):
@@ -128,18 +149,19 @@ class Lista:
         s = s.rstrip(', ')
         s += ' ]'
         return s
-        
-# Criando uma instância da lista encadeada
-lista = Lista()
 
-# Inserindo elementos para testes
-lista.inserir(1, 10)  # Inserindo na posição 1
-lista.inserir(2, 20)  # Inserindo na posição 2
-lista.inserir(3, 30)  # Inserindo na posição 3
-lista.inserir(4, 40)  # Inserindo na posição 4
 
-lista.remover(0)
-print("Teste 2 - Removendo início:", lista)  
+lista1 = Lista()
+lista2 = Lista()
+
+lista1.inserir(1, "A")
+lista1.inserir(2, "B")
+
+lista2.inserir(1, "C")
+lista2.inserir(2, "D")
+
+combinada = lista2.merge(lista1)
+print(combinada)  # Esperado: [A, B, C, D]
 
 
 
