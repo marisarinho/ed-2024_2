@@ -97,6 +97,7 @@ class Pilha:
                 s += ' -> '
             s += str(atual.carga)
             atual = atual.proximo
+
         return s
 
 pilha = Pilha()
@@ -104,3 +105,4 @@ pilha.empilha(10)
 pilha.empilha(20)
 pilha.empilha(30)
 pilha2 = pilha.duplicar()
+print(pilha)

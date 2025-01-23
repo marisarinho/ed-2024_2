@@ -87,10 +87,28 @@ class Lista:
 
         self.__head.tamanho += 1
 
-    
+    def remover(self,posicao):
+        assert not self.vazia(),'lista vazia para remoçao'
+        if posicao<0 or posicao>len(self):
+            raise ListaError ('digite uma posicao valida')
+        cursor = self.__head.inicio
+        for i in range(posicao):
+            anterior = cursor
+            cursor = cursor.proximo
+        if( posicao == 0):
+            self.__head.inicio = cursor.proximo
+        else:
+            anterior.proximo = cursor.proximo
+        if posicao == len(self)-1:
+            self.__head.fim = anterior
+        self.__head.tamanho -= 1   
+
+    def merge(self):
+        """"""
+
 
     def modificar(self,posicao,carga):
-        assert posicao > 0 and posicao <= len(self),'diga uma posicao valida'
+        assert not posicao > 0 and posicao <= len(self),'diga uma posicao valida'
         assert not self.vazia()
         cursor = self.__head.inicio
         contador = 1
@@ -100,27 +118,6 @@ class Lista:
 
         cursor.carga = carga
         return
-
-
-    # def append(self,elem):
-    #     """  insere elementos
-    #      no fim da lista, replicando o append
-    #        """
-    #     if self.__head.inicio is not None:#se tiverem elementos ja na lista
-    #         cursor = self.__head.inicio
-    #         #percorrendo ate o ponteiro n ter mais proximo(no caso, qnd ele for None)
-    #         while(cursor.prox):
-    #             cursor = cursor.prox
-    #         #qnd o while acaba, o ponteiro n tem mais proximo
-    #         #portanto, essa linha muda o None para No(elem) [que seria o novo ultimo no]
-    #         cursor.prox = No(elem)
-            
-    #     else:
-    #         #primeiro elemento
-    #         self.__head.inicio = No(elem)
-    #     self.__head.tamanho+=1
-
-
 
     def __str__(self):
         s = '['
@@ -141,20 +138,25 @@ lista.inserir(2, 20)  # Inserindo na posição 2
 lista.inserir(3, 30)  # Inserindo na posição 3
 lista.inserir(4, 40)  # Inserindo na posição 4
 
-print("Lista original:")
-print(lista)  # Esperado: [10, 20, 30, 40]
+lista.remover(0)
+print("Teste 2 - Removendo início:", lista)  
 
-# Caso 1: Modificar o primeiro elemento
-lista.modificar(1, 99)
-print("Após modificar a posição 1 para 99:")
-print(lista)  # Esperado: [99, 20, 30, 40]
 
-# Caso 2: Modificar um elemento do meio da lista
-lista.modificar(3, 77)
-print("Após modificar a posição 3 para 77:")
-print(lista)  # Esperado: [99, 20, 77, 40]
 
-# Caso 3: Modificar o último elemento
-lista.modificar(4, 55)
-print("Após modificar a posição 4 para 55:")
-print(lista)  # Esperado: [99, 20, 77, 55]
+   # def append(self,elem):
+    #     """  insere elementos
+    #      no fim da lista, replicando o append
+    #        """
+    #     if self.__head.inicio is not None:#se tiverem elementos ja na lista
+    #         cursor = self.__head.inicio
+    #         #percorrendo ate o ponteiro n ter mais proximo(no caso, qnd ele for None)
+    #         while(cursor.prox):
+    #             cursor = cursor.prox
+    #         #qnd o while acaba, o ponteiro n tem mais proximo
+    #         #portanto, essa linha muda o None para No(elem) [que seria o novo ultimo no]
+    #         cursor.prox = No(elem)
+            
+    #     else:
+    #         #primeiro elemento
+    #         self.__head.inicio = No(elem)
+    #     self.__head.tamanho+=1
