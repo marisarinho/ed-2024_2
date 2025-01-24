@@ -17,13 +17,10 @@ print(novaFrase)
 
 def inverter(self):
     cursor = self.topo
-    elementos = []
+    self.esvazia()
     while cursor is not None:
-        elementos.append(cursor.carga)
+        self.empilha(cursor.carga)
         cursor = cursor.proximo
-    self.esvaziar()  
-    for carga in elementos:
-        self.empilha(carga)
 
 
 def reverse(frase):
